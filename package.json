@@ -1,0 +1,43 @@
+{
+  "name": "lifeline-api",
+  "version": "1.0.0",
+  "description": "A RESTful API for managing health-related data and emergencies.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bala": "node index.js",
+    "start": "nodemaon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BalajiCodings/lifeline-api.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "api",
+    "healthcare"
+  ],
+  "author": "Balaji",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/BalajiCodings/lifeline-api/issues"
+  },
+  "homepage": "https://github.com/BalajiCodings/lifeline-api#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.14.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
