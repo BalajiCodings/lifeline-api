@@ -5,12 +5,16 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 
-import authRoutes from '../routes/authRoutes.js';
+import sosRoutes from './routes/sosRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import connectDB from './config/db.js';
+import contactRoutes from './routes/contactRoutes.js';
 
 dotenv.config();
 
 connectDB();
+
+const app = express();
 
 app.use(express.json());
 app.use(cors());
@@ -30,9 +34,12 @@ app.get('/', (req, res) => {
     res.send(`Welcome to Lifeline API`);
 });
 
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`server running on port ${port}`);
 });
 
 
+app.use('/api/contacts', contactRoutes);
+
+app.use('/api/sos', sosRoutes);
