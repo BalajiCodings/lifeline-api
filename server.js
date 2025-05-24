@@ -9,6 +9,9 @@ import sosRoutes from './routes/sosRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import connectDB from './config/db.js';
 import contactRoutes from './routes/contactRoutes.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import ApiError from '../utils/ApiError.js';
+import activityRoutes from './routes/activityRoutes.js';
 
 dotenv.config();
 
@@ -16,6 +19,7 @@ connectDB();
 
 const app = express();
 
+app.use(errorHandler);
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
@@ -43,3 +47,8 @@ app.listen(port, () => {
 app.use('/api/contacts', contactRoutes);
 
 app.use('/api/sos', sosRoutes);
+app.use('/api/activity', activityRoutes);
+
+if(!user) {
+  throw new ApiError(404, 'User not found');
+}

@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import logActivity from '../utils/logActivity.js';
 
 export const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -19,7 +20,8 @@ export const login = async (req, res) => {
         if(!user || !(await bcrypt.compare(password, user.password)))
             return res.status(401).json({ message: "Balaji invalid credentails"});
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
-        res.json({ token });
+        await logActivity(user._id, 'LOGIN', { email: user.email });
+        res.json({ token, message: 'Login successful' });
     } catch (err) {
         res.status(500).json({ message: "Login failed Mr.balaji"});
     }

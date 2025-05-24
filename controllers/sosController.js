@@ -1,4 +1,5 @@
 import Contact from '../models/Contact.js';
+import logActivity from '../utils/logActivity.js';
 
 export const triggerSOS = async (req, res) => {
     try {
@@ -15,6 +16,7 @@ export const triggerSOS = async (req, res) => {
         });
 
         console.log("SOS ALERT LOG: ", alertLog);
+        await logActivity(userId, 'SOS_Triggered', { contactCount: contacts.length });
 
         res.status(200).json({
             message: "SOS alerts triggered successfully!",

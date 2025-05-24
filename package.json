@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bala": "node index.js",
-    "start": "nodemaon index.js"
+    "bala": "node server.js",
+    "start": "nodemaon server.js"
   },
   "repository": {
     "type": "git",

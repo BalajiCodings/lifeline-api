@@ -1,4 +1,5 @@
 import Contact from '../models/Contact.js';
+import logActivity from '../utils/logActivity.js';
 
 export const createContact = async (req, res) => {
     try {
@@ -9,6 +10,8 @@ export const createContact = async (req, res) => {
             phone,
             relation
         });
+        await logActivity(req.user.userId, 'CONTACT_CREATED', { contactName: contact.name });
+
         res.status(201).json(contact);
     } catch (error) {
         res.status(500).json({ message: "Failed to create contact balaji" });
@@ -32,6 +35,8 @@ export const updateContact = async (req, res) => {
             { new: true }
         );
         if (!contact) return res.status(404).json({ message: "Contact not found" });
+        await logActivity(req.user.userId, 'CONTACT_CREATED', { contactName: contact.name });
+
         res.json(contact);
     } catch (err) {
         res.status(500).json({ message: "Failed to update contact" });
@@ -45,6 +50,8 @@ export const deleteContact = async (req, res) => {
             user: req.user.userId
         }); 
         if (!contact) return res.status(404).json({ message: "Contact not found" });
+        await logActivity(req.user.userId, 'CONTACT_CREATED', { contactName: contact.name });
+
         res.json({ message: "Contact deleted" });
     } catch (err) {
         res.status(500).json({ message: "Failed to delete contact" });
