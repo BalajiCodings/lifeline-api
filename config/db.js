@@ -2,7 +2,10 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
+        const mongoURI = process.env.NODE_ENV === 'test'
+        ? process.env.MONGO_URI_TEST
+        : process.env.MONGO_URI;
+        await mongoose.connect(mongoURI, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });

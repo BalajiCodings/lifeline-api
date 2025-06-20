@@ -3,7 +3,10 @@ import logActivity from '../utils/logActivity.js';
 
 export const createContact = async (req, res) => {
     try {
-        const { name, phone, relation } = req.body;
+        let { name, phone, relation } = req.body;
+        if (!phone.startsWith('+')) {
+            phone = '+91' + phone;
+        }
         const contact = await Contact.create({
             user: req.user.userId,
             name,
@@ -14,7 +17,7 @@ export const createContact = async (req, res) => {
 
         res.status(201).json(contact);
     } catch (error) {
-        res.status(500).json({ message: "Failed to create contact balaji" });
+        res.status(500).json({ message: "Failed to create contact" });
     }
 };
 
@@ -23,7 +26,7 @@ export const getContacts = async (req, res) => {
         const contacts = await Contact.find({ user: req.user.userId });
         res.json(contacts);
     } catch (err) {
-        res.status(500).json("Failed to fetch contacts");
+        res.status(500).json({ message: "Failed to fetch contacts" });
     }
 };
 
@@ -35,7 +38,7 @@ export const updateContact = async (req, res) => {
             { new: true }
         );
         if (!contact) return res.status(404).json({ message: "Contact not found" });
-        await logActivity(req.user.userId, 'CONTACT_CREATED', { contactName: contact.name });
+        await logActivity(req.user.userId, 'CONTACT_UPDATED', { contactName: contact.name });
 
         res.json(contact);
     } catch (err) {
@@ -48,9 +51,9 @@ export const deleteContact = async (req, res) => {
         const contact = await Contact.findOneAndDelete({
             _id: req.params.id,
             user: req.user.userId
-        }); 
+        });
         if (!contact) return res.status(404).json({ message: "Contact not found" });
-        await logActivity(req.user.userId, 'CONTACT_CREATED', { contactName: contact.name });
+        await logActivity(req.user.userId, 'CONTACT_DELETED', { contactName: contact.name });
 
         res.json({ message: "Contact deleted" });
     } catch (err) {

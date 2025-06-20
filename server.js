@@ -10,8 +10,8 @@ import authRoutes from './routes/authRoutes.js';
 import connectDB from './config/db.js';
 import contactRoutes from './routes/contactRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
-import ApiError from '../utils/ApiError.js';
 import activityRoutes from './routes/activityRoutes.js';
+
 
 dotenv.config();
 
@@ -19,7 +19,6 @@ connectDB();
 
 const app = express();
 
-app.use(errorHandler);
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
@@ -33,22 +32,29 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use('/api/auth', authRoutes);
+app.use('/api/contacts', contactRoutes);
+app.use('/api/sos', sosRoutes);
+app.use('/api/activity', activityRoutes);
+
 
 app.get('/', (req, res) => {
     res.send(`Welcome to Lifeline API`);
 });
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-    console.log(`server running on port ${port}`);
+app.use((req, res, next) => {
+  res.status(404).json({ message: 'Route not found' });
 });
 
+app.use(errorHandler);
 
-app.use('/api/contacts', contactRoutes);
-
-app.use('/api/sos', sosRoutes);
-app.use('/api/activity', activityRoutes);
-
-if(!user) {
-  throw new ApiError(404, 'User not found');
+const PORT = process.env.PORT || 5000;
+if (process.env.NODE_ENV === 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 }
+
+
+export default app;
+
+
